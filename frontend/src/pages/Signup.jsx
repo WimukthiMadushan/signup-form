@@ -1,9 +1,10 @@
 import React from "react";
 import { validation } from "../signupValidation";
 import { useState, useNavigate } from "react";
+import axios from "axios";
 
 function Signup() {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const [values, setvalues] = useState({
     full_name: "",
     email: "",
@@ -16,6 +17,18 @@ function Signup() {
     console.log(values);
     const validationErrors = validation(values);
     setErrors(validationErrors);
+    if (
+      errors.full_name === "" &&
+      errors.email === "" &&
+      errors.password === ""
+    ) {
+      axios
+        .post("http://localhost:8081/signup", { values })
+        .then((res) => {
+          navigate("/");
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   const handleChange = (event) => {

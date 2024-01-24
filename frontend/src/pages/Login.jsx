@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useNavigate } from "react";
 import "./Login.css";
-import { Link } from "react-router-dom";
 import "./../LoginValidation";
 import { validation } from "../LoginValidation";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [values, setvalues] = useState({
     email: "",
     password: "",
@@ -21,6 +23,18 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setErrors(validation(values));
+    if (errors.email === "" && errors.password === "") {
+      axios
+        .post("http://localhost:8081/login", { values })
+        .then((res) => {
+          if (res.data === "Sucess") {
+            navigate("/");
+          } else {
+            alert("No record existed");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
   };
   return (
     <form className="form-container" onSubmit={handleSubmit}>
