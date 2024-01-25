@@ -18,6 +18,7 @@ function Signup() {
     console.log(values);
     const validationErrors = validation(values);
     setErrors(validationErrors);
+    //console.log(errors);
 
     if (
       !validationErrors.full_name &&

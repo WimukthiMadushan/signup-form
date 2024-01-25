@@ -9,35 +9,41 @@ app.use(express.json());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
-  database: "signup",
+  password: "#WM@b2000#",
+  database: "signup_form",
 });
 
 app.post("/signup", (req, res) => {
-  const sql = "INSERT INTO login (`name`,`email`, `password`) values (?)";
-  const values = [req.body.name, req.body.email, req.body.password];
-  db.query(sql, [values], (err, data) => {
+  const sql =
+    "INSERT INTO login (`name`, `email`, `password`) VALUES (?, ?, ?)";
+  const values = [req.body.full_name, req.body.email, req.body.password];
+  console.log(values);
+
+  db.query(sql, values, (err, data) => {
     if (err) {
+      console.log(err);
       return res.json("Error");
     }
     return res.json(data);
   });
+});
 
-  app.post("/login", (req, res) => {
-    const sql = "SELECT * FROM login WHERE `email` = ? and `password` = ?";
-    db.query(sql, [req.body.email, req.body.password], (err, data) => {
-      if (err) {
-        return res.json("Error");
-      }
-      if (data.length > 0) {
-        return res.json("Sucess");
-      } else {
-        return res.json("Fail");
-      }
-    });
-  });
+app.post("/login", (req, res) => {
+  const sql = "SELECT * FROM login WHERE `email` = ? and `password` = ?";
+  const values = [req.body.email, req.body.password];
 
-  app.listen(8081, () => {
-    console.log("listning...");
+  db.query(sql, values, (err, data) => {
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      return res.json("Success");
+    } else {
+      return res.json("Fail");
+    }
   });
+});
+
+app.listen(8081, () => {
+  console.log("Listening on port 8081...");
 });
