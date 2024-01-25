@@ -1,6 +1,7 @@
 import React from "react";
 import { validation } from "../signupValidation";
-import { useState, useNavigate } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import axios from "axios";
 
 function Signup() {
@@ -17,10 +18,11 @@ function Signup() {
     console.log(values);
     const validationErrors = validation(values);
     setErrors(validationErrors);
+
     if (
-      errors.full_name === "" &&
-      errors.email === "" &&
-      errors.password === ""
+      !validationErrors.full_name &&
+      !validationErrors.email &&
+      !validationErrors.password
     ) {
       axios
         .post("http://localhost:8081/signup", { values })

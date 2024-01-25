@@ -1,9 +1,10 @@
-import React, { useState, useNavigate } from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import "./../LoginValidation";
 import { validation } from "../LoginValidation";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 function Login() {
   const navigate = useNavigate();
